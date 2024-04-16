@@ -10,9 +10,11 @@ public:
 
 	// 当ThreadCache内存不足的时候，需要向中心缓存申请
 	void* FromCentralFetch(size_t index, size_t alignSize);
+
+	void ListTooLong(FreeList& list, size_t size);
 private:
 
-	FreeList _freelists[FREE_NUM];
+	FreeList _freelists[NFREELIST];
 
 };
 

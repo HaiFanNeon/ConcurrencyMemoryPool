@@ -1,67 +1,89 @@
-#include "ObjectPool.h"
-#include <vector>
-
-using namespace std;
-
-/*
-	测试速度
-*/
-struct TreeNode
-{
-	int _val;
-	TreeNode* _left;
-	TreeNode* _right;
-	TreeNode()
-		:_val(0)
-		, _left(nullptr)
-		, _right(nullptr)
-	{}
-};
-void TestObjectPool()
-{
-	// 申请释放的轮次
-	const size_t Rounds = 100;
-	// 每轮申请释放多少次
-	const size_t N = 100000;
-	size_t begin1 = clock();
-	std::vector<TreeNode*> v1;
-	v1.reserve(N);
-	for (size_t j = 0; j < Rounds; ++j)
-	{
-		for (int i = 0; i < N; ++i)
-		{
-			v1.push_back(new TreeNode);
-		}
-		for (int i = 0; i < N; ++i)
-		{
-			delete v1[i];
-		}
-		v1.clear();
-	}
-	size_t end1 = clock();
-	ObjectPool<TreeNode> TNPool;
-	size_t begin2 = clock();
-	std::vector<TreeNode*> v2;
-	v2.reserve(N);
-	for (size_t j = 0; j < Rounds; ++j)
-	{
-		for (int i = 0; i < N; ++i)
-		{
-			v2.push_back(TNPool.New());
-		}
-		for (int i = 0; i < 100000; ++i)
-		{
-			TNPool.Delete(v2[i]);
-		}
-		v2.clear();
-	}
-	size_t end2 = clock();
-	cout << "new cost time:" << end1 - begin1 << endl;
-	cout << "object pool cost time:" << end2 - begin2 << endl;
-}
-
-int main()
-{
-	TestObjectPool();
-	return 0;
-}
+//#include "Common.hpp"
+//#include "CurrentAllocate.h"
+//#include "CentralCache.h"
+//#include "PageCache.h"
+//#include "ThreadCache.h"
+//
+//void test1() {
+//	for (int i = 0; i < 5; i++) {
+//		void* ptr = CurrentAlloc(7);
+//	}
+//}
+//
+//void test2() {
+//	for (int i = 0; i < 5; i++) {
+//		void* ptr = CurrentAlloc(7);
+//	}
+//}
+//
+//
+//
+//void test3() {
+//	std::vector<void*> st;
+//	st.push_back(0);
+//	for (int i = 1; i <= 1000; i++) {
+//		void* ptr = CurrentAlloc((i + 1) % 8192);
+//		st.push_back(ptr);
+//		std::cout << ptr << std::endl;
+//	}
+//	for (int i = 1; i <= 100; i++) {
+//		void* t = st[i];
+//		CurrentFree(t);
+//		
+//	}
+//
+//
+//	//void* ptr = CurrentAlloc(9);
+//	//std::cout << ptr << std::endl;
+//
+//}
+//
+//void test4() {
+//	std::vector<void*> st;
+//	for (int i = 1; i <= 100; i++) {
+//		void* ptr = CurrentAlloc((i + 1) % 8192);
+//		st.push_back(ptr);
+//		std::cout << ptr << std::endl;
+//	}
+//	for (int i = 1; i <= 100; i++) {
+//		
+//		void* t = st[i - 1];
+//		CurrentFree(t);
+//
+//	}
+//
+//}
+//
+//void test5() {
+//	std::vector<void*> st;
+//	for (int i = 1; i <= 100; i++) {
+//		void* ptr = CurrentAlloc((i + 1) % 8192);
+//		st.push_back(ptr);
+//		std::cout << ptr << std::endl;
+//	}
+//	for (int i = 1; i <= 100; i++) {
+//
+//		void* t = st[i - 1];
+//		CurrentFree(t);
+//
+//	}
+//}
+//
+//
+//
+//void test() {
+//	std::thread t1(test3);
+//	//std::thread t2(test4);
+//	//std::thread t3(test5);
+//
+//	t1.join();
+//	//t2.join();
+//	//t3.join();
+//
+//}
+//
+//int main()
+//{
+//	test();
+//	return 0;
+//}

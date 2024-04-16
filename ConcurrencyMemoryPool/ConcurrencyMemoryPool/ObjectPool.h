@@ -45,6 +45,8 @@ public:
 		return obj;
 	}
 
+
+
 	void Delete(T* obj)
 	{
 		obj->~T(); // 显示调用析构函数，把空间还给内存池，自由链表接管这块空间
